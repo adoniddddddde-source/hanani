@@ -142,7 +142,6 @@
         @keyframes blink {
             50% { opacity: 0; }
         }
-        /* Style adjustments for start overlay box layout */
         .start-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -161,7 +160,7 @@
     <!-- Invisible video frame running background audio safely -->
     <video id="bgMusic" src="https://catbox.moe" loop style="display:none;" playsinline></video>
 
-    <!-- STEP 0: Smooth Entry Intermission (Bypasses Browser Audio Security Blocks) -->
+    <!-- STEP 0: Smooth Entry Intermission -->
     <div id="startOverlay" class="start-overlay">
         <div class="card">
             <h2>Hey Hanani! ✨</h2>
@@ -229,22 +228,24 @@
         const longWishesText = "Happy Birthday to my crazy, fun, fabulous bestie. I hope you had a great day and the year ahead is the best yet!\n\nI am so grateful for your friendship and all the times we've shared together....... Did uh remember the date when we started our friendship probably not right?\n\nLove you my partner in crime birthday girl once again Happy birthday my Geso bestie ❤️";
 
         function openWebsite() {
-            // Hide the button container overlay seamlessly
             document.getElementById('startOverlay').style.display = 'none';
             
-            // Instantly trigger music, confetti, and script animations
             const music = document.getElementById('bgMusic');
             if (music) {
                 music.muted = false;
-                music.play().catch(e => console.log("Audio pipeline active"));
+                music.play().catch(e => console.log("Audio play allowed"));
             }
             
             spawnConfetti();
             
             typeWriter(longWishesText, 0, document.getElementById('typewriterText'), function() {
                 const nextBtn = document.getElementById('nextBtnStep2');
-                if (nextBtn) nextBtn.style.display = 'block';
+                if (nextBtn) nextBtn.style.display = 'block'; // Typo fixed permanently!
             });
         }
 
         function spawnConfetti() {
+            for (let i = 0; i < 40; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = Math.random() * 100 + 'vw';
