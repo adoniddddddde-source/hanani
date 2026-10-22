@@ -12,7 +12,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         body {
-            background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.6)), url('https://ibb.co');
+            background-color: #ffe4e1;
             color: #333;
             display: flex;
             justify-content: center;
@@ -23,7 +23,6 @@
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
-            transition: background 0.5s ease;
             position: relative;
             overflow-x: hidden;
         }
@@ -50,7 +49,6 @@
             color: #d11a5b;
             margin-bottom: 20px;
             font-size: 1.7rem;
-            animation: pulse 2s infinite;
         }
         p {
             margin-bottom: 25px;
@@ -71,9 +69,6 @@
             outline: none;
             background: #fffafa;
         }
-        textarea:focus {
-            border-color: #d11a5b;
-        }
         button {
             background: linear-gradient(135deg, #d11a5b, #ff6b8b);
             color: white;
@@ -85,11 +80,7 @@
             cursor: pointer;
             width: 100%;
             box-shadow: 0 5px 15px rgba(209, 26, 91, 0.3);
-            transition: transform 0.2s, background 0.2s;
             margin-top: auto;
-        }
-        button:hover {
-            transform: scale(1.02);
         }
         .gift-btn {
             background: #f8f9fa;
@@ -100,12 +91,6 @@
             padding: 16px;
             margin-bottom: 12px;
             width: 100%;
-            font-weight: normal;
-            box-shadow: none;
-        }
-        .gift-btn:hover {
-            background: #e9ecef;
-            transform: none;
         }
         .gift-btn.correct {
             border-color: #28a745;
@@ -122,18 +107,12 @@
             position: absolute;
             width: 10px;
             height: 10px;
-            background-color: #f2d74e;
             animation: fall 3s linear infinite;
             top: -10px;
             z-index: 1;
         }
         @keyframes fall {
             to { transform: translateY(105vh) rotate(360deg); }
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.03); }
-            100% { transform: scale(1); }
         }
         .typing-effect::after {
             content: '|';
@@ -157,10 +136,10 @@
 </head>
 <body>
 
-    <!-- Invisible video frame running background audio safely -->
-    <video id="bgMusic" src="https://catbox.moe" loop style="display:none;" playsinline></video>
+    <!-- Updated with muted layout attribute to bypass background permission crash loops -->
+    <video id="bgMusic" src="https://catbox.moe" loop style="display:none;" playsinline muted></video>
 
-    <!-- STEP 0: Smooth Entry Intermission -->
+    <!-- STEP 0: Splash Start -->
     <div id="startOverlay" class="start-overlay">
         <div class="card">
             <h2>Hey Hanani! ✨</h2>
@@ -169,8 +148,8 @@
         </div>
     </div>
 
-    <!-- STEP 1: Real-time Typewriter Letter Screen with Background Image -->
-    <div id="step2" class="card">
+    <!-- STEP 1: Main Typewriter Content -->
+    <div id="step2" class="card hidden">
         <h2>Happy Birthday! 🎉🎂</h2>
         <div class="scroll-box">
             <p id="typewriterText" class="typing-effect"></p>
@@ -178,7 +157,7 @@
         <button id="nextBtnStep2" onclick="nextStep(2, 3)" style="display:none;">Next Wish ✨</button>
     </div>
 
-    <!-- STEP 2: Second Reading Wish Page Layout -->
+    <!-- STEP 2: Wishes For You -->
     <div id="step3" class="card hidden">
         <h2>Wishes for You ✨🌸</h2>
         <div class="scroll-box">
@@ -189,7 +168,7 @@
         <button onclick="nextStep(3, 4)">Next 🎁</button>
     </div>
 
-    <!-- STEP 3: The Gift Trap matrix Box -->
+    <!-- STEP 3: Gift Game Screen -->
     <div id="step4" class="card hidden">
         <h2>Pick Your Birthday Gift! 🎁</h2>
         <p class="center-text">Choose wisely, you can only pick one option:</p>
@@ -201,14 +180,14 @@
         </div>
     </div>
 
-    <!-- STEP 4: Educational Exam Reminder Intermission -->
+    <!-- STEP 4: Study Break -->
     <div id="step5" class="card hidden">
         <h2>Omg sweetheart! 🥺📚</h2>
         <p class="center-text">By the way, you may have a test soon, so go and study for it! You better study hard right after looking at this. I wish you the absolute best!</p>
         <button onclick="nextStep(5, 6)">Next 📚</button>
     </div>
 
-    <!-- STEP 5: User Dialogue Message Portal -->
+    <!-- STEP 5: Questionnaire Dialogue Portal -->
     <div id="step6" class="card hidden">
         <h2 id="questionTitle">One quick thing... 🤔</h2>
         <p id="questionPrompt" class="center-text">Is there something that you wanted to say to me but haven't had the opportunity to say yet?</p>
@@ -216,7 +195,7 @@
         <button onclick="processFinalQuestion()">Send to Adoni 🚀</button>
     </div>
 
-    <!-- STEP 6: Completed Success Layout Screen -->
+    <!-- STEP 6: Final Success -->
     <div id="step7" class="card hidden">
         <h2>Sent! 😜😁🎉</h2>
         <p class="center-text">Your message has been securely beamed over to Adoni!</p>
@@ -225,22 +204,28 @@
     </div>
 
     <script>
+        const backPhotoUrl = "https://ibb.co";
         const longWishesText = "Happy Birthday to my crazy, fun, fabulous bestie. I hope you had a great day and the year ahead is the best yet!\n\nI am so grateful for your friendship and all the times we've shared together....... Did uh remember the date when we started our friendship probably not right?\n\nLove you my partner in crime birthday girl once again Happy birthday my Geso bestie ❤️";
 
         function openWebsite() {
-            document.getElementById('startOverlay').style.display = 'none';
-            
+            // Unmute and fire audio playback safely
             const music = document.getElementById('bgMusic');
             if (music) {
+                music.removeAttribute('muted');
                 music.muted = false;
-                music.play().catch(e => console.log("Audio play allowed"));
+                music.play();
             }
+
+            // Transition UI views
+            document.getElementById('startOverlay').style.display = 'none';
+            document.getElementById('step2').classList.remove('hidden');
+            document.body.style.backgroundImage = "linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.6)), url('" + backPhotoUrl + "')";
             
             spawnConfetti();
             
             typeWriter(longWishesText, 0, document.getElementById('typewriterText'), function() {
                 const nextBtn = document.getElementById('nextBtnStep2');
-                if (nextBtn) nextBtn.style.display = 'block'; // Typo fixed permanently!
+                if (nextBtn) nextBtn.style.display = 'block';
             });
         }
 
@@ -249,3 +234,14 @@
                 const confetti = document.createElement('div');
                 confetti.classList.add('confetti');
                 confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.animationDelay = Math.random() * 2 + 's';
+                confetti.style.backgroundColor = ['#ff6b8b','#f2d74e','#6bcbff','#4eff91','#b14eff'][Math.floor(Math.random() * 5)];
+                document.body.appendChild(confetti);
+            }
+        }
+
+        function typeWriter(text, i, element, callback) {
+            if (!element) return;
+            if (i < text.length) {
+                if (text.substring(i, i+1) === "\n") {
+                    element.innerHTML += "<br>";
