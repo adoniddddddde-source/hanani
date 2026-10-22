@@ -20,20 +20,23 @@
             min-height: 100vh;
             padding: 20px;
             text-align: center;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            transition: background 0.5s ease;
         }
         .card {
             background: rgba(255, 255, 255, 0.95);
             padding: 30px 20px;
             border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
             width: 100%;
             max-width: 400px;
-            min-height: 350px;
+            min-height: 400px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            transition: all 0.3s ease;
         }
         .hidden {
             display: none !important;
@@ -45,8 +48,12 @@
         }
         p {
             margin-bottom: 25px;
-            font-size: 1.1rem;
-            line-height: 1.5;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            text-align: left;
+        }
+        .center-text {
+            text-align: center;
         }
         input[type="text"], textarea {
             width: 100%;
@@ -64,42 +71,18 @@
             background: #d11a5b;
             color: white;
             border: none;
-            padding: 12px 25px;
+            padding: 14px 25px;
             border-radius: 50px;
             font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
             width: 100%;
             transition: background 0.2s;
-            margin-top: 10px;
+            margin-top: auto;
         }
         button:hover {
             background: #a61244;
         }
-        .music-control {
-            position: fixed;
-            top: 15px;
-            right: 15px;
-            background: rgba(255, 255, 255, 0.8);
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            border: 1px solid #ffb6c1;
-            z-index: 1000;
-        }
-        /* Photo Background Screen */
-        .photo-bg {
-            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.6)), url('your-photo.jpg');
-            background-size: cover;
-            background-position: center;
-            color: white !important;
-        }
-        .photo-bg h2 {
-            color: #fff;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-        }
-        /* Gift Options */
         .gift-btn {
             background: #f8f9fa;
             color: #333;
@@ -118,57 +101,73 @@
             border-color: #28a745;
             background: #e8f5e9;
         }
+        .scroll-box {
+            max-height: 280px;
+            overflow-y: auto;
+            padding-right: 5px;
+            margin-bottom: 15px;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
 
-    <!-- Audio Player (Add your music track here) -->
-    <audio id="bgMusic" src="your-music.mp3" loop></audio>
-    <div class="music-control" onclick="toggleMusic()">🎵 Music: Off</div>
+    <!-- Embedded Music Track -->
+    <audio id="bgMusic" src="https://files.catbox.moe/6b8nk5.mp4" loop></audio>
 
-    <!-- STEP 1: Verification -->
+    <!-- STEP 1: Verification Gate -->
     <div id="step1" class="card">
         <h2>Security Check! 🔐</h2>
-        <p>To verify if it's really you... what is your grandpa's name?</p>
+        <p class="center-text">To verify if it's really you... what is your grandpa's name?</p>
         <input type="text" id="grandpaInput" placeholder="Enter his name here...">
         <button onclick="verifyGrandpa()">Verify Me</button>
     </div>
 
-    <!-- STEP 2: Main Wish with Photo Background -->
+    <!-- STEP 2: Main Long Wish with Your Shared Background Photo -->
     <div id="step2" class="card hidden">
         <h2>Happy Birthday! 🎉</h2>
-        <p>You successfully passed the test! May this year bring you endless laughter, beautiful moments, and everything your heart desires.</p>
-        <button onclick="nextStep(2, 3)">Next ❤️</button>
+        <div class="scroll-box">
+            <p>Happy Birthday to my crazy, fun, fabulous bestie. I hope you had a great day and the year ahead is the best yet!</p>
+            <p>I am so grateful for your friendship and all the times we've shared together....... Did uh remember the date when we started our friendship probably not right?</p>
+            <p>Love you my partner in crime birthday girl once again Happy birthday my Geso bestie ❤️</p>
+        </div>
+        <button onclick="nextStep(2, 3)">Next Wish ✨</button>
     </div>
 
-    <!-- STEP 3: Extra Wishes Page -->
-    <div id="step3" class="card">
-        <h2>More Wishes For You ✨</h2>
-        <p>I wish you massive success in everything you touch, perfect health, and pure happiness. You deserve the entire universe and more!</p>
-        <button onclick="nextStep(3, 4)">Next ✨</button>
+    <!-- STEP 3: Second Long Reading Wish Page -->
+    <div id="step3" class="card hidden">
+        <h2>Wishes for You ✨</h2>
+        <div class="scroll-box">
+            <p>As you celebrate today, I want you to remember how deeply appreciated you are. Through every chaotic laugh, every long conversation, and every memory we've built, you have been a pillar of light in my life.</p>
+            <p>I wish you endless success in your dreams, the ultimate happiness that your beautiful soul deserves, and the strength to ace every challenge that comes your way. May this year open unexpected doors of joy and bring peace to your heart.</p>
+            <p>We are going to make so many more memories together, and I promise to always stand by you as your partner in crime. Cheers to another stunning milestone of your life! Happy Birthday!</p>
+        </div>
+        <button onclick="nextStep(3, 4)">Next 🎁</button>
     </div>
 
-    <!-- STEP 4: The Gift Trap -->
+    <!-- STEP 4: The Gift Choice -->
     <div id="step4" class="card hidden">
         <h2>Pick Your Birthday Gift! 🎁</h2>
-        <p>Choose wisely, you can only pick one option:</p>
-        <button class="gift-btn" onclick="tryGift('A')">A) 200 Birr cash 💵</button>
-        <button class="gift-btn" onclick="tryGift('B')">B) A beautiful hand jewellery ✨</button>
-        <button class="gift-btn" onclick="tryGift('C')">C) Delicious custom cookies 🍪</button>
-        <button class="gift-btn correct" onclick="tryGift('D')">D) No, I got what I want. 10q for your offers! ❤️</button>
+        <p class="center-text">Choose wisely, you can only pick one option:</p>
+        <div style="width: 100%; margin-bottom: 15px;">
+            <button class="gift-btn" onclick="tryGift('A')">A) 200 Birr cash 💵</button>
+            <button class="gift-btn" onclick="tryGift('B')">B) A beautiful hand jewellery ✨</button>
+            <button class="gift-btn" onclick="tryGift('C')">C) Delicious custom cookies 🍪</button>
+            <button class="gift-btn correct" onclick="tryGift('D')">D) No, I got what I want. 10q for your offers! ❤️</button>
+        </div>
     </div>
 
-    <!-- STEP 5: Study Reminder & Final Question Intermission -->
+    <!-- STEP 5: Study Reminder -->
     <div id="step5" class="card hidden">
         <h2>Omg sweetheart! 🥺</h2>
-        <p>By the way, you may have a test soon, so go and study for it! You better study hard right after looking at this. I wish you the absolute best!</p>
+        <p class="center-text">By the way, you may have a test soon, so go and study for it! You better study hard right after looking at this. I wish you the absolute best!</p>
         <button onclick="nextStep(5, 6)">Next 📚</button>
     </div>
 
-    <!-- STEP 6: Opportunity to speak / Custom conditional question -->
+    <!-- STEP 6: Conditional Inputs -->
     <div id="step6" class="card hidden">
         <h2 id="questionTitle">One quick thing...</h2>
-        <p id="questionPrompt">Is there something that you wanted to say to me but haven't had the opportunity to say yet?</p>
+        <p id="questionPrompt" class="center-text">Is there something that you wanted to say to me but haven't had the opportunity to say yet?</p>
         <textarea id="finalThoughts" rows="4" placeholder="Type your answer honestly..."></textarea>
         <button onclick="processFinalQuestion()">Send to Adoni 🚀</button>
     </div>
@@ -176,59 +175,45 @@
     <!-- STEP 7: Final Page -->
     <div id="step7" class="card hidden">
         <h2>Sent! 😜😁</h2>
-        <p>Your message has been securely beamed over to Adoni! Happy Birthday once again! Now go study! ❤️</p>
+        <p class="center-text">Your message has been securely beamed over to Adoni! Happy Birthday once again! Now go study! ❤️</p>
     </div>
 
     <script>
-        // Start audio playback smoothly on first interaction
+        // Direct integrated raw link to your background image file
+        const backPhotoUrl = "https://ibb.co";
+
         function startMusic() {
             const music = document.getElementById('bgMusic');
-            if (music.paused) {
-                music.play().then(() => {
-                    document.querySelector('.music-control').innerText = "🎵 Music: On";
-                }).catch(e => console.log("Audio waiting for user swipe"));
-            }
+            music.play().catch(e => console.log("Audio playback initiated after interaction"));
         }
 
-        function toggleMusic() {
-            const music = document.getElementById('bgMusic');
-            const btn = document.querySelector('.music-control');
-            if (music.paused) {
-                music.play();
-                btn.innerText = "🎵 Music: On";
-            } else {
-                music.pause();
-                btn.innerText = "🎵 Music: Off";
-            }
-        }
-
-        // 1. Verification
         function verifyGrandpa() {
-            const name = document.getElementById('grandpaInput').value.trim();
-            if(name === "") {
-                alert("Please enter a name to verify!");
+            const name = document.getElementById('grandpaInput').value.trim().toLowerCase();
+            
+            // Strictly locks down security verification execution
+            if(name !== "taye") {
+                alert("❌ Hmmm, that doesn't seem right! Try again.");
                 return;
             }
+            
             startMusic();
-            // Move to Step 2 and turn on the photo background styling
+            
+            // Dynamic image backdrop update injection
+            document.body.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.55)), url('${backPhotoUrl}')`;
+            
             document.getElementById('step1').classList.add('hidden');
-            const step2 = document.getElementById('step2');
-            step2.classList.remove('hidden');
-            document.body.classList.add('photo-bg');
-            step2.classList.add('photo-bg');
+            document.getElementById('step2').classList.remove('hidden');
         }
 
-        // Navigation Engine
         function nextStep(current, next) {
-            // Remove photo background when moving past step 2
             if(current === 2) {
-                document.body.classList.remove('photo-bg');
+                document.body.style.backgroundImage = "none";
+                document.body.style.backgroundColor = "#ffe4e1";
             }
             document.getElementById('step' + current).classList.add('hidden');
             document.getElementById('step' + next).classList.remove('hidden');
         }
 
-        // 4. Gift Selection Logic
         function tryGift(option) {
             if (option === 'A') {
                 alert("Nope! You can't choose that one. Try looking at the other options!");
@@ -241,24 +226,19 @@
             }
         }
 
-        // 6. Clever flow loop logic for negative answers
         let questionState = 1; 
 
         function processFinalQuestion() {
             const val = document.getElementById('finalThoughts').value.toLowerCase().trim();
-            
-            // Check for typical negative words if on the first version of the question
             const negativeWords = ['no', 'nothing', 'nope', 'nah', 'none', 'i dont think so', 'not really'];
             const isNegative = negativeWords.some(word => val.includes(word)) || val === "";
 
             if (questionState === 1 && isNegative) {
-                // Change the prompt to the follow up question dynamically
                 document.getElementById('questionTitle').innerText = "Let me rephrase... ✨";
                 document.getElementById('questionPrompt').innerText = "What is the one thing you wish everyone felt or understood about you?";
                 document.getElementById('finalThoughts').value = "";
-                questionState = 2; // update state so next click passes through
+                questionState = 2;
             } else {
-                // Final submission step
                 nextStep(6, 7);
             }
         }
