@@ -12,7 +12,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         body {
-            background-color: #ffe4e1;
+            background: #ffe4e1;
             color: #333;
             display: flex;
             justify-content: center;
@@ -23,6 +23,7 @@
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
+            transition: background 0.5s ease;
             position: relative;
             overflow-x: hidden;
         }
@@ -49,6 +50,7 @@
             color: #d11a5b;
             margin-bottom: 20px;
             font-size: 1.7rem;
+            animation: pulse 2s infinite;
         }
         p {
             margin-bottom: 25px;
@@ -59,7 +61,7 @@
         .center-text {
             text-align: center;
         }
-        textarea {
+        input[type="text"], textarea {
             width: 100%;
             padding: 14px;
             border: 2px solid #ffb6c1;
@@ -68,6 +70,9 @@
             font-size: 1rem;
             outline: none;
             background: #fffafa;
+        }
+        input[type="text"]:focus, textarea:focus {
+            border-color: #d11a5b;
         }
         button {
             background: linear-gradient(135deg, #d11a5b, #ff6b8b);
@@ -80,7 +85,11 @@
             cursor: pointer;
             width: 100%;
             box-shadow: 0 5px 15px rgba(209, 26, 91, 0.3);
+            transition: transform 0.2s, background 0.2s;
             margin-top: auto;
+        }
+        button:hover {
+            transform: scale(1.02);
         }
         .gift-btn {
             background: #f8f9fa;
@@ -91,6 +100,12 @@
             padding: 16px;
             margin-bottom: 12px;
             width: 100%;
+            font-weight: normal;
+            box-shadow: none;
+        }
+        .gift-btn:hover {
+            background: #e9ecef;
+            transform: none;
         }
         .gift-btn.correct {
             border-color: #28a745;
@@ -107,12 +122,18 @@
             position: absolute;
             width: 10px;
             height: 10px;
+            background-color: #f2d74e;
             animation: fall 3s linear infinite;
             top: -10px;
             z-index: 1;
         }
         @keyframes fall {
             to { transform: translateY(105vh) rotate(360deg); }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
         }
         .typing-effect::after {
             content: '|';
@@ -121,34 +142,22 @@
         @keyframes blink {
             50% { opacity: 0; }
         }
-        .start-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: #ffe4e1;
-            z-index: 9999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            padding: 20px;
-        }
     </style>
 </head>
 <body>
 
-    <!-- Updated with muted layout attribute to bypass background permission crash loops -->
-    <video id="bgMusic" src="https://catbox.moe" loop style="display:none;" playsinline muted></video>
+    <!-- Invisible video frame streaming background audio bypass layer -->
+    <video id="bgMusic" src="https://catbox.moe" loop style="display:none;" playsinline></video>
 
-    <!-- STEP 0: Splash Start -->
-    <div id="startOverlay" class="start-overlay">
-        <div class="card">
-            <h2>Hey Hanani! ✨</h2>
-            <p class="center-text">I made something special for your birthday. Tap below to unwrap it! ❤️</p>
-            <button onclick="openWebsite()">Open Surprise 🎁</button>
-        </div>
+    <!-- STEP 1: Verification Gate -->
+    <div id="step1" class="card">
+        <h2>Security Check! 🔐</h2>
+        <p class="center-text">To verify if it's really you... what is your grandpa's name?</p>
+        <input type="text" id="grandpaInput" placeholder="Enter his name here...">
+        <button onclick="verifyGrandpa()">Verify Me</button>
     </div>
 
-    <!-- STEP 1: Main Typewriter Content -->
+    <!-- STEP 2: Real-time Typewriter Letter Content Screen -->
     <div id="step2" class="card hidden">
         <h2>Happy Birthday! 🎉🎂</h2>
         <div class="scroll-box">
@@ -157,7 +166,7 @@
         <button id="nextBtnStep2" onclick="nextStep(2, 3)" style="display:none;">Next Wish ✨</button>
     </div>
 
-    <!-- STEP 2: Wishes For You -->
+    <!-- STEP 3: Second Reading Wish Page Layout -->
     <div id="step3" class="card hidden">
         <h2>Wishes for You ✨🌸</h2>
         <div class="scroll-box">
@@ -168,7 +177,7 @@
         <button onclick="nextStep(3, 4)">Next 🎁</button>
     </div>
 
-    <!-- STEP 3: Gift Game Screen -->
+    <!-- STEP 4: The Gift Trap Layout Box -->
     <div id="step4" class="card hidden">
         <h2>Pick Your Birthday Gift! 🎁</h2>
         <p class="center-text">Choose wisely, you can only pick one option:</p>
@@ -180,14 +189,14 @@
         </div>
     </div>
 
-    <!-- STEP 4: Study Break -->
+    <!-- STEP 5: Educational Exam Reminder Intermission -->
     <div id="step5" class="card hidden">
         <h2>Omg sweetheart! 🥺📚</h2>
         <p class="center-text">By the way, you may have a test soon, so go and study for it! You better study hard right after looking at this. I wish you the absolute best!</p>
         <button onclick="nextStep(5, 6)">Next 📚</button>
     </div>
 
-    <!-- STEP 5: Questionnaire Dialogue Portal -->
+    <!-- STEP 6: User Dialogue Message Portal -->
     <div id="step6" class="card hidden">
         <h2 id="questionTitle">One quick thing... 🤔</h2>
         <p id="questionPrompt" class="center-text">Is there something that you wanted to say to me but haven't had the opportunity to say yet?</p>
@@ -195,38 +204,20 @@
         <button onclick="processFinalQuestion()">Send to Adoni 🚀</button>
     </div>
 
-    <!-- STEP 6: Final Success -->
+    <!-- STEP 7: Completed Success Notification Layout -->
     <div id="step7" class="card hidden">
         <h2>Sent! 😜😁🎉</h2>
-        <p class="center-text">Your message has been securely beamed over to Adoni!</p>
-        <p class="center-text" style="font-weight: bold; color: #d11a5b; margin: 15px 0;">Oh my god, by the way, you are just that much beautiful! ✨ Can you please meet up with me together with your friend soon? Let's hang out!</p>
-        <p class="center-text">Happy Birthday once again! Now go study! ❤️</p>
+        <p class="center-text">Your message has been securely beamed over to Adoni! Happy Birthday once again! Now go study! ❤️</p>
     </div>
 
     <script>
         const backPhotoUrl = "https://ibb.co";
         const longWishesText = "Happy Birthday to my crazy, fun, fabulous bestie. I hope you had a great day and the year ahead is the best yet!\n\nI am so grateful for your friendship and all the times we've shared together....... Did uh remember the date when we started our friendship probably not right?\n\nLove you my partner in crime birthday girl once again Happy birthday my Geso bestie ❤️";
 
-        function openWebsite() {
-            // Unmute and fire audio playback safely
+        function startMusic() {
             const music = document.getElementById('bgMusic');
-            if (music) {
-                music.removeAttribute('muted');
-                music.muted = false;
-                music.play();
-            }
-
-            // Transition UI views
-            document.getElementById('startOverlay').style.display = 'none';
-            document.getElementById('step2').classList.remove('hidden');
-            document.body.style.backgroundImage = "linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.6)), url('" + backPhotoUrl + "')";
-            
-            spawnConfetti();
-            
-            typeWriter(longWishesText, 0, document.getElementById('typewriterText'), function() {
-                const nextBtn = document.getElementById('nextBtnStep2');
-                if (nextBtn) nextBtn.style.display = 'block';
-            });
+            music.muted = false;
+            music.play().catch(e => console.log("Audio target triggered after event"));
         }
 
         function spawnConfetti() {
@@ -240,8 +231,21 @@
             }
         }
 
-        function typeWriter(text, i, element, callback) {
-            if (!element) return;
-            if (i < text.length) {
-                if (text.substring(i, i+1) === "\n") {
-                    element.innerHTML += "<br>";
+        function verifyGrandpa() {
+            const name = document.getElementById('grandpaInput').value.trim().toLowerCase();
+            
+            if(name !== "taye") {
+                alert("❌ Hmmm, that doesn't seem right! Try again.");
+                return;
+            }
+            
+            startMusic();
+            spawnConfetti();
+            
+            document.body.style.backgroundImage = "url('" + backPhotoUrl + "')";
+            
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step2').classList.remove('hidden');
+            
+            typeWriter(longWishesText, 0, document.getElementById('typewriterText'), function() {
+                document.getElementById('nextBtnStep2').style.display = 'block';
