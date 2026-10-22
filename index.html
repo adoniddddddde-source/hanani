@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday!</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.6)), url('https://ibb.co');
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            text-align: center;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            transition: background 0.5s ease;
+            position: relative;
+            overflow-x: hidden;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 35px 25px;
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            width: 100%;
+            max-width: 410px;
+            min-height: 420px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.5);
+            z-index: 10;
+        }
+        .hidden {
+            display: none !important;
+        }
+        h2 {
+            color: #d11a5b;
+            margin-bottom: 20px;
+            font-size: 1.7rem;
+            animation: pulse 2s infinite;
+        }
+        p {
+            margin-bottom: 25px;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            text-align: left;
+        }
+        .center-text {
+            text-align: center;
+        }
+        textarea {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #ffb6c1;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+            outline: none;
+            background: #fffafa;
+        }
+        textarea:focus {
+            border-color: #d11a5b;
+        }
+        button {
+            background: linear-gradient(135deg, #d11a5b, #ff6b8b);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.05rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            box-shadow: 0 5px 15px rgba(209, 26, 91, 0.3);
+            transition: transform 0.2s, background 0.2s;
+            margin-top: auto;
+        }
+        button:hover {
+            transform: scale(1.02);
+        }
+        .gift-btn {
+            background: #f8f9fa;
+            color: #333;
+            border: 2px solid #e9ecef;
+            text-align: left;
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 12px;
+            width: 100%;
+            font-weight: normal;
+            box-shadow: none;
+        }
+        .gift-btn:hover {
+            background: #e9ecef;
+            transform: none;
+        }
+        .gift-btn.correct {
+            border-color: #28a745;
+            background: #e8f5e9;
+        }
+        .scroll-box {
+            max-height: 290px;
+            overflow-y: auto;
+            padding-right: 5px;
+            margin-bottom: 15px;
+            width: 100%;
+        }
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f2d74e;
+            animation: fall 3s linear infinite;
+            top: -10px;
+            z-index: 1;
+        }
+        @keyframes fall {
+            to { transform: translateY(105vh) rotate(360deg); }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+        .typing-effect::after {
+            content: '|';
+            animation: blink 1s infinite;
+        }
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+        /* Style adjustments for start overlay box layout */
+        .start-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #ffe4e1;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Invisible video frame running background audio safely -->
+    <video id="bgMusic" src="https://catbox.moe" loop style="display:none;" playsinline></video>
+
+    <!-- STEP 0: Smooth Entry Intermission (Bypasses Browser Audio Security Blocks) -->
+    <div id="startOverlay" class="start-overlay">
+        <div class="card">
+            <h2>Hey Hanani! ✨</h2>
+            <p class="center-text">I made something special for your birthday. Tap below to unwrap it! ❤️</p>
+            <button onclick="openWebsite()">Open Surprise 🎁</button>
+        </div>
+    </div>
+
+    <!-- STEP 1: Real-time Typewriter Letter Screen with Background Image -->
+    <div id="step2" class="card">
+        <h2>Happy Birthday! 🎉🎂</h2>
+        <div class="scroll-box">
+            <p id="typewriterText" class="typing-effect"></p>
+        </div>
+        <button id="nextBtnStep2" onclick="nextStep(2, 3)" style="display:none;">Next Wish ✨</button>
+    </div>
+
+    <!-- STEP 2: Second Reading Wish Page Layout -->
+    <div id="step3" class="card hidden">
+        <h2>Wishes for You ✨🌸</h2>
+        <div class="scroll-box">
+            <p>As you celebrate today, I want you to remember how deeply appreciated you are. Through every chaotic laugh, every long conversation, and every memory we've built, you have been a pillar of light in my life.</p>
+            <p>I wish you endless success in your dreams, the ultimate happiness that your beautiful soul deserves, and the strength to ace every challenge that comes your way. May this year open unexpected doors of joy and bring peace to your heart.</p>
+            <p>We are going to make so many more memories together, and I promise to always stand by you as your partner in crime. Cheers to another stunning milestone of your life! Happy Birthday!</p>
+        </div>
+        <button onclick="nextStep(3, 4)">Next 🎁</button>
+    </div>
+
+    <!-- STEP 3: The Gift Trap matrix Box -->
+    <div id="step4" class="card hidden">
+        <h2>Pick Your Birthday Gift! 🎁</h2>
+        <p class="center-text">Choose wisely, you can only pick one option:</p>
+        <div style="width: 100%; margin-bottom: 15px;">
+            <button class="gift-btn" onclick="tryGift('A')">A) 200 Birr cash 💵</button>
+            <button class="gift-btn" onclick="tryGift('B')">B) A beautiful hand jewellery ✨</button>
+            <button class="gift-btn" onclick="tryGift('C')">C) Delicious custom cookies 🍪</button>
+            <button class="gift-btn correct" onclick="tryGift('D')">D) No, I got what I want. 10q for your offers! ❤️</button>
+        </div>
+    </div>
+
+    <!-- STEP 4: Educational Exam Reminder Intermission -->
+    <div id="step5" class="card hidden">
+        <h2>Omg sweetheart! 🥺📚</h2>
+        <p class="center-text">By the way, you may have a test soon, so go and study for it! You better study hard right after looking at this. I wish you the absolute best!</p>
+        <button onclick="nextStep(5, 6)">Next 📚</button>
+    </div>
+
+    <!-- STEP 5: User Dialogue Message Portal -->
+    <div id="step6" class="card hidden">
+        <h2 id="questionTitle">One quick thing... 🤔</h2>
+        <p id="questionPrompt" class="center-text">Is there something that you wanted to say to me but haven't had the opportunity to say yet?</p>
+        <textarea id="finalThoughts" rows="4" placeholder="Type your answer honestly..."></textarea>
+        <button onclick="processFinalQuestion()">Send to Adoni 🚀</button>
+    </div>
+
+    <!-- STEP 6: Completed Success Layout Screen -->
+    <div id="step7" class="card hidden">
+        <h2>Sent! 😜😁🎉</h2>
+        <p class="center-text">Your message has been securely beamed over to Adoni!</p>
+        <p class="center-text" style="font-weight: bold; color: #d11a5b; margin: 15px 0;">Oh my god, by the way, you are just that much beautiful! ✨ Can you please meet up with me together with your friend soon? Let's hang out!</p>
+        <p class="center-text">Happy Birthday once again! Now go study! ❤️</p>
+    </div>
+
+    <script>
+        const longWishesText = "Happy Birthday to my crazy, fun, fabulous bestie. I hope you had a great day and the year ahead is the best yet!\n\nI am so grateful for your friendship and all the times we've shared together....... Did uh remember the date when we started our friendship probably not right?\n\nLove you my partner in crime birthday girl once again Happy birthday my Geso bestie ❤️";
+
+        function openWebsite() {
+            // Hide the button container overlay seamlessly
+            document.getElementById('startOverlay').style.display = 'none';
+            
+            // Instantly trigger music, confetti, and script animations
+            const music = document.getElementById('bgMusic');
+            if (music) {
+                music.muted = false;
+                music.play().catch(e => console.log("Audio pipeline active"));
+            }
+            
+            spawnConfetti();
+            
+            typeWriter(longWishesText, 0, document.getElementById('typewriterText'), function() {
+                const nextBtn = document.getElementById('nextBtnStep2');
+                if (nextBtn) nextBtn.style.display = 'block';
+            });
+        }
+
+        function spawnConfetti() {
