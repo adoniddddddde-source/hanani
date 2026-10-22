@@ -176,21 +176,20 @@
     <div id="step7" class="card hidden">
         <h2>Sent! 😜😁</h2>
         <p class="center-text">Your message has been securely beamed over to Adoni! Happy Birthday once again! Now go study! ❤️</p>
+        <p class="center-text" style="font-weight: bold; color: #d11a5b; margin-top: 15px;">I wanna meet your friend tomorrow so you are gonna help me so get a better sleep go bye bye</p>
     </div>
 
     <script>
-        // Direct integrated raw link to your background image file
         const backPhotoUrl = "https://ibb.co";
 
         function startMusic() {
             const music = document.getElementById('bgMusic');
-            music.play().catch(e => console.log("Audio playback initiated after interaction"));
+            music.play().catch(e => console.log("Audio playback waiting for interaction"));
         }
 
         function verifyGrandpa() {
             const name = document.getElementById('grandpaInput').value.trim().toLowerCase();
             
-            // Strictly locks down security verification execution
             if(name !== "taye") {
                 alert("❌ Hmmm, that doesn't seem right! Try again.");
                 return;
@@ -198,7 +197,6 @@
             
             startMusic();
             
-            // Dynamic image backdrop update injection
             document.body.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.55)), url('${backPhotoUrl}')`;
             
             document.getElementById('step1').classList.add('hidden');
